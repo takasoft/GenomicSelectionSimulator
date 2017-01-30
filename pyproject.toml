@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "genetic-linkage"
+version = "0.1.0"
+description = "NumPy engine for genetic linkage simulation"
+readme = "genetic_linkage/README.md"
+requires-python = ">=3.9"
+dependencies = ["numpy"]
+license = "MIT"
+license-files = ["genetic_linkage/LICENSE"]
+
+[tool.setuptools]
+packages = ["genetic_linkage"]
+py-modules = ["GenericLinkage"]
+
+[tool.setuptools.package-data]
+genetic_linkage = ["README.md", "LICENSE"]

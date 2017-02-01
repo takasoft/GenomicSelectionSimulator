@@ -22,7 +22,13 @@ assert progeny.shape == (3, 2, 3)
 ```
 
 See the [module documentation](genetic_linkage/README.md) for the algorithm,
-input shapes, and reproducibility.
+input shapes, reproducibility, and experimental batching variants.
 The legacy `from GenericLinkage import cross2` import remains available.
+
+Run the tests:
+
+```text
+python -m unittest discover -s tests -v
+```
 
 The module retains its [original MIT license](genetic_linkage/LICENSE).

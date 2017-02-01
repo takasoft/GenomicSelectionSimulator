@@ -41,11 +41,30 @@ Inputs must already have the documented shapes. The module does not
 add input validation or change probability handling. For biological
 recombination fractions, use values between 0 and 0.5.
 
-## Provenance
+## Experimental variants and provenance
+
+The former `GenericLinkageBeta.py` batching variants are available only through
+explicit imports:
+
+```python
+from genetic_linkage.experimental import cross2mp, cross2sp
+```
+
+`cross2mp` uses multiprocessing, while `cross2sp` processes batches sequentially.
+Both call the same `cross2` implementation.
+They retain the legacy CPU-dependent batch sizing and progress output.
+They still collect the full result in memory and are not streaming APIs.
+Multiprocessing random-state behavior depends on the process start method,
+so a parent-process seed does not guarantee reproducible or independent worker
+streams. Prefer `cross2` for reproducible simulations.
+
+On Windows and other systems using the spawn start method, call `cross2mp`
+from a script inside an `if __name__ == "__main__":` guard.
 
 The code and algorithm documentation were migrated from the former
 `genetic-linkage` repository at revision
 `ba576517b6dfc0621e803494106e67329a21ad9b`.
 The default implementation omits the original module's debug prints.
+The old timing examples are replaced by small regression tests in this repository.
 
 The [original MIT license](LICENSE) is retained for the linkage code.

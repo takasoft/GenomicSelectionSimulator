@@ -41,7 +41,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0">
+    <item row="3" column="0">
      <widget class="QListWidget" name="listWidgetOrgPopulation">
       <property name="maximumSize">
        <size>
@@ -51,7 +51,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item row="3" column="1">
      <widget class="QListWidget" name="listWidgetSelectionApproach">
       <property name="maximumSize">
        <size>
@@ -61,15 +61,53 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
-     <widget class="QPushButton" name="btnStart">
-      <property name="text">
-       <string>Start</string>
+    <item row="7" column="0" colspan="8">
+     <widget class="QWidget" name="canvas" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>167</height>
+       </size>
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="3">
-     <widget class="QWidget" name="canvas" native="true"/>
+    <item row="8" column="0" colspan="8">
+     <widget class="QLabel" name="labelStatus">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="5">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="btnGenerateData">
+        <property name="text">
+         <string>Generate Data</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnLoadData">
+        <property name="text">
+         <string>Load Data</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnStart">
+        <property name="text">
+         <string>Start</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -79,7 +117,7 @@
      <x>0</x>
      <y>0</y>
      <width>640</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -87,6 +125,7 @@
      <string>File</string>
     </property>
     <addaction name="actionExit"/>
+    <addaction name="actionOpenData"/>
    </widget>
    <addaction name="menuFile"/>
   </widget>
@@ -94,6 +133,11 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionOpenData">
+   <property name="text">
+    <string>Open Data File</string>
    </property>
   </action>
  </widget>

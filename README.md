@@ -1,14 +1,25 @@
-# Genetic linkage
+# GenomicSelectionSimulator
 
-A NumPy-only module for generating progeny from two diploid genomes.
-Genetic linkage describes the tendency of nearby loci on a chromosome to be
-inherited together.
+Research simulator for plant breeding with a Python/Qt GUI and a NumPy engine.
+It models repeated selection and crossing of plants using genomic estimated
+breeding values (GEBVs).
 
-Install from the repository root:
+The [genetic linkage engine](genetic_linkage/README.md) is maintained in this
+repository alongside the simulator. Genetic linkage describes the tendency of
+nearby loci on a chromosome to be inherited together.
+
+Developed as part of an [undergraduate research project at Iowa State University](http://lib.dr.iastate.edu/undergradresearch_symposium/2017/presentations/82/).
+See the [research poster](poster.pdf).
+
+## Usage
+
+With Python 3.9 or newer, install the engine from the repository root:
 
 ```text
 python -m pip install .
 ```
+
+This installs `genetic_linkage` with NumPy only. The GUI is not needed to use it:
 
 ```python
 import numpy as np
@@ -17,18 +28,39 @@ from genetic_linkage import cross2
 L1 = np.array([[0, 0, 0], [1, 1, 1]], dtype=np.int8)
 L2 = np.array([[1, 1, 1], [0, 0, 0]], dtype=np.int8)
 RF = np.array([0.05, 0.05])
-progeny = cross2(L1, L2, RF, 3)
-assert progeny.shape == (3, 2, 3)
+progeny = cross2(L1, L2, RF, 3)  # Shape: (3, 2, 3)
 ```
 
-See the [module documentation](genetic_linkage/README.md) for the algorithm,
-input shapes, reproducibility, and experimental batching variants.
-The legacy `from GenericLinkage import cross2` import remains available.
+To install the optional GUI dependencies and launch the existing simulator,
+run these commands from the source checkout:
 
-Run the tests:
+```text
+python -m pip install ".[gui]"
+python main.py
+```
+
+Calculations and data preparation run in worker threads. Qt handles status and
+plot updates on the main thread and queues redraws. Pause and Stop take effect
+between calculation steps. Closing requests cancellation and waits for the
+worker to finish without blocking the event loop. File loading supports MATLAB
+HDF5 `.mat` files.
+
+`from GenericLinkage import cross2` still works for existing callers, but new
+code should use `genetic_linkage`. There is only one implementation of `cross2`.
+
+Run the engine tests without GUI dependencies:
 
 ```text
 python -m unittest discover -s tests -v
 ```
 
-The module retains its [original MIT license](genetic_linkage/LICENSE).
+The bundled engine retains its [original MIT license](genetic_linkage/LICENSE).
+That license notice covers the linkage code, not a new license grant for the
+rest of the simulator.
+
+## Contributions
+
+- [Takao Shibamoto](https://github.com/takasoft) - main developer
+- [Dr. Lizhi Wang](https://www.imse.iastate.edu/directory/faculty/lizhi-wang/) - mentor
+- [ISU Industrial and Manufacturing Systems Engineering](https://www.imse.iastate.edu/)
+- [ISU University Honors Program](https://www.honors.iastate.edu/)

@@ -1,8 +1,8 @@
 #!/usr/bin/python
 import numpy as np
 
-# L1 = 2 by n matrix
-# L2 = 2 by nmatrix
+# L1 = n * 2 matrix
+# L2 = n * 2 matrix
 # RF = array of recombination frequencies of size (n-1) 
 # k  = number of progenies to produce
 def cross2(L1, L2, RF, k):
@@ -24,7 +24,7 @@ def cross2(L1, L2, RF, k):
 	# it shows which columns to choose in Y1 and Y2
 	# In fDown, 0 means up and 1 means down
 	# In fUp, 0 means down and 1 means up
-	cumprodRC = np.cumprod(1-2*RC, axis=1)
+	cumprodRC = np.cumprod(1-2*RC, axis=1, dtype=np.int8)
 	fDown = cumprodRC < 0
 	fDown = np.reshape(fDown, (2*k, n), order='F')
 	fUp  = cumprodRC > 0
@@ -39,6 +39,7 @@ def cross2(L1, L2, RF, k):
 	combinedUp = np.vstack((splittedL1[0], splittedL2[0]))
 	combinedDown = np.vstack((splittedL1[1], splittedL2[1]))
 	Y1 = np.tile(combinedUp, [k, 1])
+
 	Y2 = np.tile(combinedDown, [k, 1])
 
 	# multiple elements in Y1 and Y2  
@@ -51,4 +52,4 @@ def cross2(L1, L2, RF, k):
 	Y = np.reshape(Y, (k, 2, n), order='C')
 
 	return Y
-	
+

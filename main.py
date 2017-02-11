@@ -39,6 +39,12 @@ class ThreadLoadMatData(QtCore.QThread):
 					value = data.value
 					if(name == "Geno"):
 						genomes = value
+						# convert it to a bool array
+						#print(genomes)
+						#genomes = np.array(genomes, dtype=np.bool)
+						genomes = np.array(genomes, dtype=np.int8)
+						#print((genomes==genomes2).all())
+						#print(genomes)
 					if(name == "RF"):
 						rf = value
 					if(name == "eft"):
@@ -55,6 +61,8 @@ class ThreadLoadMatData(QtCore.QThread):
 		rf = rf[0]
 		eft = eft[0]
 
+		#print(np.sum(eft))
+		#print(potentials)
 
 		data = [genomes, rf, eft, gebvs, potentials]
 
@@ -71,6 +79,7 @@ class ThreadGenerateTestData(QtCore.QThread):
 	def run(self):
 		n = 14000
 		genomes = np.random.randint(2, size=(600,n))
+		genomes = np.array(genomes, dtype = np.int8)
 		genomes = np.reshape(genomes, (300, 2, n), order='C')
 		rf = 0.1*np.random.random(n-1)
 		eft = 700*np.random.random(n)
@@ -125,6 +134,8 @@ class ThreadCalculateGen(QtCore.QThread):
 		chosenGenomes = np.reshape(chosenGenomes, (self.numChosenGenomes, 2, self.numRows), order='C')
 		#print(chosenGenomes.shape)
 
+		self.genomes = None
+		#self.genomes = np.empty([0, 0, 0])
 		# produces 20 progenies from every 2 genomes
 		# we are going to make a 2*20*15 by 1406757 matrix
 		# and reshape it to 300 by 2 by 1406757 matrix
@@ -133,7 +144,7 @@ class ThreadCalculateGen(QtCore.QThread):
 		L1 = chosenGenomes[0]
 		L2 = chosenGenomes[1]
 		#print(L2.shape)
-		self.genomes = np.empty([0, 0, 0])
+		
 		self.genomes = cross2(L1, L2, self.rf, self.numProgenies)
 		#print(self.genomes.shape)
 		## repeat adding 
@@ -192,6 +203,10 @@ class WidgetGraph():
 		self.layout = None
 		self.labelStatus = None
 
+		self.numProgenies = 20
+		self.numChosenGenomes = 30
+		self.numRows = 0
+
 	# sets genome, recombination frequency, 
 	# GEBV, and potentials
 	def setData(self, data):
@@ -200,6 +215,7 @@ class WidgetGraph():
 		self.eft = data[2]
 		self.gebvs = data[3]
 		self.potentials = data[4]
+		self.numRows = self.genomes.shape[2]
 		#print(self.potentials)
 
 	# returns the data
@@ -254,7 +270,7 @@ class WidgetGraph():
 			self.ax.plot([self.currentGen-1, self.currentGen], self.averageGEBVs, linewidth=0.3, color='red')
 			self.averageGEBVs.pop(0)
 
-
+	# fill between max gebv and min gebv
 	def fillMaxMinGEBV(self):
 		self.maxGEBV.append(np.max(self.gebvs))
 		self.minGEBV.append(np.min(self.gebvs))
@@ -265,12 +281,25 @@ class WidgetGraph():
 			self.maxGEBV.pop(0)
 			self.minGEBV.pop(0)
 
+	# fill between ylim and highest potential
+	# and  between 0 and lowest potential
 	def fillHighLow(self):
-		#h = genomes
+		#Y = np.reshape(self.genomes, (2*self.numProgenies*self.numChosenGenomes, self.numRows), order='C')
+		Y = np.reshape(self.genomes, (600, self.numRows), order='C')
+		sumYcolumn = np.sum(Y, axis=0, dtype=np.bool)
+		prodYcolumn = np.prod(Y, axis=0, dtype=np.bool)
+		h = 2*np.sum(sumYcolumn*self.eft)
+		l = 2*np.sum(prodYcolumn*self.eft)
+		#print(h)
+		#print(l)
+		
 		self.high.append(h)
 		self.low.append(l)
 		if(self.currentGen > 0):
-			self.ax.plot([self.currentGen-1, self.currentGen], self.high, linewidth=1, color='red')
+			self.ax.fill_between([self.currentGen-1, self.currentGen], self.high, [12369035.6329792, 12369035.6329792], facecolor='grey', alpha=0.7)
+			self.ax.fill_between([self.currentGen-1, self.currentGen], [0,0], self.low, facecolor='grey', alpha=0.7)
+			#self.ax.plot([self.currentGen-1, self.currentGen], self.high, linewidth=1, color='black')
+			#self.ax.plot([self.currentGen-1, self.currentGen], self.low, linewidth=1, color='black')
 			#self.ax.fill([self.currentGen-1, self.currentGen], self.maxGEBV, color='black')
 			#self.ax.plot([self.currentGen-1, self.currentGen], self.minGEBV, color='black')
 			self.high.pop(0)
@@ -291,6 +320,7 @@ class WidgetGraph():
 		self.ax.barh(center, hist, width, self.currentGen, color='blue')
 		self.plotAverage()
 		self.fillMaxMinGEBV()
+		self.fillHighLow()
 		# refresh the axis after plot
 		self.refreshAxis()
 		# refresh canvas
@@ -309,8 +339,6 @@ class WidgetGraph():
 		self.threadCalc.wait()
 
 	def finishedCalcGen(self, data):
-		
-
 		self.genomes = data[0]
 		self.rf = data[1]
 		self.eft = data[2]

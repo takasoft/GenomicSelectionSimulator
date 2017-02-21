@@ -54,6 +54,15 @@ Run the engine tests without GUI dependencies:
 python -m unittest discover -s tests -v
 ```
 
+With the GUI dependencies installed, run the offscreen UI regression tests:
+
+```text
+python -m unittest discover -s tests\gui -v
+```
+
+These cover GUI-thread rendering, event-loop responsiveness, pause and restart,
+stopping and closing, and background data loading.
+
 The bundled engine retains its [original MIT license](genetic_linkage/LICENSE).
 That license notice covers the linkage code, not a new license grant for the
 rest of the simulator.

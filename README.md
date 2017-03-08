@@ -45,6 +45,48 @@ between calculation steps. Closing requests cancellation and waits for the
 worker to finish without blocking the event loop. File loading supports MATLAB
 HDF5 `.mat` files.
 
+**Synthetic poster-scale dataset.** The bundled
+[demo data](demo/synthetic-poster-demo.mat) models 300 plants from 20 founders,
+with 14,000 loci in 100 linked blocks. The
+[Python generator](scripts/generate_synthetic_poster_demo.py) creates the NumPy
+inputs and runs a seeded reference simulation to illustrate the poster's score
+scale and selection curve. This is synthetic data, not the original research
+dataset.
+
+The binary `.mat` file is stored with Git LFS. Install Git LFS and retrieve
+the data before loading it:
+
+```text
+git lfs install
+git lfs pull
+```
+
+In the GUI, choose **File > Open Data File**, select
+`demo\synthetic-poster-demo.mat`, then press **Start**.
+The [metadata](demo/synthetic-poster-demo.json) records the generation parameters,
+dataset seed `2017`, simulation seed `43`, and expected mean GEBVs.
+The reference run rises from about 4.67 million to 8.04 million and levels off
+in later generations. Exact reference results require `np.random.seed(43)`
+before starting the simulation. Normal interactive runs can vary because the
+GUI does not automatically apply the seed from the metadata file.
+
+With the GUI dependencies installed, regenerate the bundled dataset and reference
+results from the repository root:
+
+```powershell
+python scripts\generate_synthetic_poster_demo.py `
+  --output-path demo\synthetic-poster-demo.mat `
+  --metadata-path demo\synthetic-poster-demo.json `
+  --overwrite
+```
+
+Both paths are required and include the filename. They can use different
+directories, and missing parent directories are created automatically.
+The example uses `--overwrite` to replace the bundled files. Without it, the
+generator refuses to replace existing output files.
+The input arrays and reference scores are reproducible from the recorded seeds.
+HDF5 container bytes can depend on the installed library versions.
+
 `from GenericLinkage import cross2` still works for existing callers, but new
 code should use `genetic_linkage`. There is only one implementation of `cross2`.
 
@@ -61,7 +103,7 @@ python -m unittest discover -s tests\gui -v
 ```
 
 These cover GUI-thread rendering, event-loop responsiveness, pause and restart,
-stopping and closing, and background data loading.
+stopping and closing, background data loading, and dataset regeneration.
 
 The bundled engine retains its [original MIT license](genetic_linkage/LICENSE).
 That license notice covers the linkage code, not a new license grant for the

@@ -1,0 +1,28 @@
+{
+  "kind": "Synthetic poster-scale demonstration, not the original research dataset",
+  "dataset_seed": 2017,
+  "simulation_seed": 43,
+  "population_size": 300,
+  "founders": 20,
+  "replicates_per_founder": 15,
+  "loci": 14000,
+  "linkage_blocks": 100,
+  "loci_per_block": 140,
+  "initial_favorable_allele_probability": 0.38,
+  "between_block_recombination": 0.01,
+  "within_block_recombination": 0.0,
+  "theoretical_upper_bound": 12369035.6329792,
+  "expected_mean_gebv_by_generation": [
+    4674010.968784614,
+    5583516.860087566,
+    6262927.6039857725,
+    6683191.478892393,
+    7142123.799058547,
+    7564463.698171082,
+    7719472.300007563,
+    7857722.944911532,
+    7956621.899141352,
+    8037702.459131824,
+    8037702.459131824
+  ]
+}

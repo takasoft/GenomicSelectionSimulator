@@ -14,7 +14,7 @@ Core module is [generic-linkage](https://github.com/takasoft/genetic-linkage)
 
 ## Contributions
 
-- [Takao Shibamoto](https://github.com/takao42) - main developer
+- [Takao Shibamoto](https://github.com/takasoft) - main developer
 - [Dr. Lizhi Wang](https://www.imse.iastate.edu/directory/faculty/lizhi-wang/) - mentor
 - [ISU Industrial and Manufacturing Systems Engineering](https://www.imse.iastate.edu/)
 - [ISU University Honors Program](https://www.honors.iastate.edu/)

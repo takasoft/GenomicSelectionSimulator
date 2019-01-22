@@ -10,7 +10,7 @@ Developed as part of an [undergradutate research at Iowa State University](http:
 
 This is [the research poster](https://github.com/takao42/GenomicSelectionSimulator/blob/master/poster.pdf).
 
-Core module is [generic-linkage](https://github.com/takao42/genetic-linkage)
+Core module is [generic-linkage](https://github.com/takasoft/genetic-linkage)
 
 ## Contributions
 

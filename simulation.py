@@ -2,7 +2,7 @@ import threading
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
-from GenericLinkage import cross2
+from genetic_linkage import cross2
 import numpy as np # fast c++ calculation module
 import time
 
